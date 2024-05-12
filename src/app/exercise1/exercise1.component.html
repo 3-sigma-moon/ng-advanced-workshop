@@ -12,12 +12,12 @@
 <hr>
 <h2>Result</h2>
 <!-- Edit the code down below to implement the requested features -->
-<div>
-  <div>Select one of 0 countries:</div>
-  <select>
-    <option>
-      United States
+<div *ngIf="countries$ | async as countries">
+  <div>Select one of {{countries.length}} countries:</div>
+  <select [formControl]="countryFormControl" >
+    <option *ngFor="let country of countries" [value]="country.id">
+      {{country.description}}
     </option>
   </select>
-  <div>Current value: US</div>
+  <div>Current value: {{countryFormControl.value}}</div>
 </div>
