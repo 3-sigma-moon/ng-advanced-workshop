@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {combineLatest, combineLatestWith, Observable, of, startWith, Subject} from 'rxjs';
+import {Component} from '@angular/core';
+import {combineLatest, Observable, of, Subject} from 'rxjs';
 import {Country, State} from './types';
 import {FormControl} from '@angular/forms';
 import {CountryService} from './country.service';
@@ -15,25 +15,28 @@ export class Exercise4Component {
   countries$: Observable<Country[]>;
   states$!: Observable<State[]>;
   state!: State;
-  countryControl: FormControl;
-  stateControl: FormControl
-  currentCountry$: Subject<Country>
-  statesForCountry$: Observable<State[]>
+  countryControl = new FormControl<Country['id']>('');
+  stateControl = new FormControl<State['description']>('');
+  currentCountry$:Subject<Country>
+  statesForCountry$:Observable<State[]> = of([])
 
-  find = (a, b) => a.description.toLowerCase().indexOf((b ?? "").toLowerCase()) !== -1
+  sort = (a, b) => a.description.toLowerCase().indexOf((b ?? "").toLowerCase()) !== -1
 
   constructor(private service: CountryService) {
-    this.currentCountry$ = new Subject<Country>()
-    this.countryControl = new FormControl<Country['id']>('')
-    this.stateControl = new FormControl<State['description']>('')
-    this.statesForCountry$ = of([])
-    this.countries$ = combineLatest([this.countryControl.valueChanges, this.service.getCountries]).pipe(
-      map(([userInput, states]) => states.filter(c => this.find(c, userInput))));
+    this.currentCountry$= new Subject<Country>()
     this.statesForCountry$ = this.currentCountry$.asObservable().pipe(switchMap(
-      country => this.service.getStatesFor(country.id)));
-    this.states$ = combineLatest([this.stateControl.valueChanges, this.statesForCountry$]).pipe(
-      map(([userInput, states]) => states.filter(s => this.find(s, userInput))));
+      country => this.service.getStatesFor(country.id)
+    ))
+
+    this.countries$ = this.countryControl.valueChanges.pipe(
+      withLatestFrom(this.service.getCountries()),
+      map(([userInput, countries]) => countries.filter(c => this.sort(c, userInput)))
+    );
+
+    this.states$ = combineLatest([this.stateControl.valueChanges,this.statesForCountry$]).pipe(
+      map(([userInput, states]) => states.filter(s => this.sort(s, userInput))));
   }
+
 
   updateStates(country: Country) {
     this.countryControl.setValue(country.description);
