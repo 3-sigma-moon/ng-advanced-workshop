@@ -17,8 +17,8 @@ export class Solution4Component {
   states$: Observable<State[]>;
   statesForCountry$: Observable<State[]> =  of([]);
   state: State;
-  countryControl = new FormControl('');
-  stateControl = new FormControl('');
+  countryControl = new FormControl<Country['id']>('');
+  stateControl = new FormControl<State['description']>('');
 
   constructor(private service: CountryService) {
     this.countries$ = combineLatest([this.countryControl.valueChanges, this.service.getCountries()]).pipe(
