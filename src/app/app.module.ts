@@ -26,13 +26,14 @@ import { StateButtonComponent } from './solution/solution7/state-button.componen
 import { Exercise7Component } from './exercise7/exercise7.component';
 import { CountryDescriptionPipe } from './exercise3/country-description.pipe';
 import { CountryStateComponent } from './exercise5/country-state/country-state.component';
+import { TreeStateDirective } from './exercise6/tree-state.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     Exercise1Component, Solution1Component, Exercise2Component, Solution2Component, Exercise3Component, Solution3Component, HighlightPipe,
     Exercise4Component,CountryStateComponent, Solution4Component, MainPageComponent, Exercise5Component, Solution5Component, AutofilterDropdownComponent,
-    Solution6Component, StateButtonDirective, Exercise6Component, Solution7Component, StateButtonComponent, Exercise7Component, CountryDescriptionPipe, CountryStateComponent
+    Solution6Component, StateButtonDirective, Exercise6Component, Solution7Component, StateButtonComponent, Exercise7Component, CountryDescriptionPipe, CountryStateComponent, TreeStateDirective
   ],
   imports: [
     BrowserModule,
