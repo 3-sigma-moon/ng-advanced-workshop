@@ -1,0 +1,10 @@
+<span *ngIf="state==='initial'">
+  <ng-content select="[defaut]"></ng-content>
+</span>
+<span *ngIf="state==='working'" >
+  <ng-content select="[working]" ></ng-content>
+</span>
+<span *ngIf="state==='done'">
+  <ng-content select="[done]"></ng-content>
+</span>
+
